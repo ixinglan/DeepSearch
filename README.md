@@ -147,6 +147,44 @@ Python 进程 ←gRPC→ Milvus 服务（localhost:19530）
 
 ---
 
+## 环境与依赖管理（项目约定）
+
+> 本项目**统一使用 Python 内置的 `venv` + `pip` + `requirements.txt` 管理环境与依赖，不切换 uv / Poetry / Conda 等第三方工具**。理由：标准、零额外安装、教学友好；当前环境已全部跑通，保持稳定优先。
+
+**① 虚拟环境（隔离依赖）**
+- 项目级虚拟环境：`.venv/`（创建命令：`python -m venv .venv`）
+- 所有运行/调试命令一律使用 `.venv` 里的 Python：
+  ```bash
+  ~/Workbuddy/langchain-langGraph/.venv/bin/python xxx.py
+  ```
+
+**② 依赖清单（声明要装什么）**
+- 每个阶段目录各有一份 `requirements.txt`：
+  - `p0_foundations/requirements.txt`（基础：langchain、langchain-openai、pydantic、python-dotenv）
+  - `p1_rag/requirements.txt`（新增：langchain-milvus、pymilvus、langchain-community、langchain-text-splitters）
+- 版本约束写法为 `>=` 区间（如 `langchain>=0.3`），安装时自动解析为当时的最新版
+- 安装命令：`~/Workbuddy/langchain-langGraph/.venv/bin/python -m pip install -r requirements.txt`
+
+**③ 当前关键版本（2026-08 实测，均为最新主线）**
+
+| 包 | 本地版本 | 说明 |
+|----|---------|------|
+| langchain | 1.3.14 | 最新 1.x 主线（PyPI 最新 1.3.15，补丁级差异，暂不升级） |
+| langchain-core | 1.5.3 | LangChain 核心 |
+| langchain-openai | 1.4.1 | ChatOpenAI（DeepSeek 兼容协议） |
+| langchain-community | 0.4.2 | TextLoader / DirectoryLoader / OllamaEmbeddings |
+| langchain-milvus | 0.4.0 | Milvus 向量库集成 |
+| pymilvus | 3.0.1 | Milvus 官方客户端 |
+
+**④ 新增依赖的流程**
+1. 编辑对应阶段的 `requirements.txt`，追加一行（如 `langgraph>=1.2`）
+2. 执行：`~/Workbuddy/langchain-langGraph/.venv/bin/python -m pip install -r requirements.txt`
+3. 验证：`~/Workbuddy/langchain-langGraph/.venv/bin/python -c "import 新包名"`
+
+> ⚠️ 注意：`.env`（密钥）与 `.venv/`（环境）不入 git；`requirements.txt` 与 `.env.example` 必须入库，保证换机器可复现。
+
+---
+
 ## 快速开始（P0）
 
 ```bash
