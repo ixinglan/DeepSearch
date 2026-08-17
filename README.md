@@ -34,21 +34,40 @@ P0 基础热身 → P1 RAG 入门 → P2 Tools & Agents → P3 LangGraph 入门 
 
 ---
 
-### P1 · RAG 入门：让模型能查你自己的资料 ⬜ 待办
+### P1 · RAG 入门：让模型能查你自己的资料 ✅ 已完成
 
 > 目标：做本地知识库问答，掌握"检索增强生成"全套组件。
-> 预计目录：`p1_rag/`
+> 目录：`p1_rag/`
 
-- [ ] 文档加载：`TextLoader` / `DirectoryLoader` / `PyPDFLoader`（读 txt / md / pdf）
-- [ ] 文本切分：`RecursiveCharacterTextSplitter`（把长文档切成小块 chunk）
-- [ ] 向量嵌入：`OpenAIEmbeddings` / `HuggingFaceEmbeddings`（把文本变成向量）
-- [ ] 向量存储：`FAISS` / `Chroma`（存向量、做相似度搜索）
-- [ ] 检索器：`retriever = vectorstore.as_retriever()`（从库里捞相关片段）
-- [ ] RAG 链：`retriever | prompt | model | parser`（检索 → 拼进 prompt → 模型回答）
-- [ ] 命令行问答：`python main.py ask "你的问题"`（基于本地文档回答）
-- [ ] 可选：多文档 / 引用溯源 / 重排序（rerank）
+- [x] 文档加载：`TextLoader` / `DirectoryLoader`（读 txt 文件，变成 Document 对象）
+- [x] 文本切分：`RecursiveCharacterTextSplitter`（把长文档切成小块 chunk，中文友好分隔符）
+- [x] 向量嵌入：`OllamaEmbeddings`（用本地 Ollama 的 bge-m3 模型，免费、离线、零 Python 依赖）
+- [x] 向量存储：`Milvus`（Docker 独立部署的向量数据库，存向量、做相似度搜索，支持持久化）
+- [x] 检索器：`retriever = vectorstore.as_retriever()`（从库里捞最相似的 3 个片段）
+- [x] RAG 链：`{"context": retriever | format_docs, "question": RunnablePassthrough()} | prompt | model | parser`
+- [x] 命令行问答：`python main.py ask "你的问题"`（基于本地文档回答，带来源溯源）
+- [x] 引用溯源：显示检索到的文档片段来源（文件名 + 内容预览）
+- [ ] 可选：多文档 / 重排序（rerank）— 后续进阶
 
-**将掌握的概念**：`Document`、`TextSplitter`、`Embeddings`、`VectorStore`、`Retriever`、RAG 流程
+**掌握的概念**：`Document`、`RecursiveCharacterTextSplitter`、`Embeddings`、`Milvus`、`VectorStore`、`Retriever`、`RunnablePassthrough`、RAG 链组装、向量库持久化
+
+**P1 运行方式**（向量库在 Milvus，不是本地文件）：
+```bash
+cd ~/Workbuddy/langchain-langGraph/p1_rag
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py ingest   # 把 data/ 文档灌入 Milvus（首次或换文档后）
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py ask "什么是 RAG？"   # 问答（带来源溯源）
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py demo      # 完整 RAG 5 步流程演示
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py list      # 查看知识库文档 + 向量库状态
+```
+
+**向量库架构**（Docker 部署的 Milvus 全家桶）：
+```
+Python 进程 ←gRPC→ Milvus 服务（localhost:19530）
+                       ├─ etcd   ：元数据存储
+                       ├─ MinIO  ：对象存储（向量数据落盘）
+                       └─ Attu   ：可视化管理界面（http://localhost:8000）
+```
+> 配置在 `p1_rag/.env`：`MILVUS_URI=http://localhost:19530`、`MILVUS_COLLECTION=p1_rag_docs`。可在浏览器打开 `http://localhost:8000`（Attu）直观看到 collection 里的向量数据。
 
 ---
 
@@ -120,7 +139,7 @@ P0 基础热身 → P1 RAG 入门 → P2 Tools & Agents → P3 LangGraph 入门 
 | 阶段 | 状态 | 目录 |
 |------|------|------|
 | P0 基础热身 | ✅ 已完成 | `p0_foundations/` |
-| P1 RAG 入门 | ⬜ 待办 | `p1_rag/` |
+| P1 RAG 入门 | ✅ 已完成 | `p1_rag/` |
 | P2 Tools & Agents | ⬜ 待办 | `p2_tools_agents/` |
 | P3 LangGraph 入门 | ⬜ 待办 | `p3_langgraph/` |
 | P4 综合项目 | 🔶 待办（核心目标） | `p4_deep_research/` |

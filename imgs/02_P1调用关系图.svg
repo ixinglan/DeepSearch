@@ -1,0 +1,154 @@
+<svg viewBox="0 0 680 600" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>P1 main.py 调用关系图（精确版）</title>
+<desc>入口守卫调用 main，main 总线分发到四个命令；ingest 依次调用加载、切分、嵌入、存储写入 Milvus；ask 依次调用嵌入、加载向量库、构建模型、构建 RAG 链；demo 走完整流程；list 直接读文件并检查 Milvus collection</desc>
+<style>
+.t{font:500 13px sans-serif;fill:#085041;text-anchor:middle}
+.ts{font:400 11px sans-serif;fill:#0F6E56;text-anchor:middle}
+.tg{font:400 11px sans-serif;fill:#5F5E5A;text-anchor:middle}
+.h{font:500 14px sans-serif;fill:#2C2C2A;text-anchor:middle}
+.nA{fill:#9FE1CB;stroke:#0F6E56;stroke-width:1}
+.nB{fill:#E1F5EE;stroke:#0F6E56;stroke-width:1}
+.nC{fill:#F1EFE8;stroke:#5F5E5A;stroke-width:1}
+.edge{stroke:#0F6E56;stroke-width:1.2;fill:none;marker-end:url(#arrow)}
+.edgeD{stroke:#0F6E56;stroke-width:1.2;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow)}
+.edgeG{stroke:#5F5E5A;stroke-width:1.2;fill:none;marker-end:url(#arrow)}
+.bg{fill:#ffffff}
+.layer{fill:none;stroke:#B0B0B0;stroke-width:1.2;stroke-dasharray:6 3}
+.badge{font:500 11px sans-serif;fill:#666}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="h" x="340" y="26">P1 · main.py 调用关系（按真实执行顺序）</text>
+
+<rect class="nA" x="60" y="48" width="210" height="44" rx="8"/>
+<text class="t" x="165" y="63">if __name__ == '__main__'</text>
+<text class="ts" x="165" y="80">入口守卫：直接运行才执行</text>
+
+<rect class="nA" x="410" y="48" width="210" height="44" rx="8"/>
+<text class="t" x="515" y="63">main()</text>
+<text class="ts" x="515" y="80">argparse 解析子命令</text>
+
+<line class="edge" x1="272" y1="70" x2="404" y2="70"/>
+<rect class="bg" x="318" y="62" width="42" height="16"/>
+<text class="ts" x="339" y="70">调用</text>
+
+<line class="edge" x1="515" y1="92" x2="515" y2="104"/>
+<line class="edge" x1="109" y1="104" x2="571" y2="104"/>
+<line class="edge" x1="109" y1="104" x2="109" y2="126"/>
+<line class="edge" x1="263" y1="104" x2="263" y2="126"/>
+<line class="edge" x1="417" y1="104" x2="417" y2="126"/>
+<line class="edge" x1="571" y1="104" x2="571" y2="126"/>
+<rect class="bg" x="472" y="108" width="88" height="16"/>
+<text class="ts" x="516" y="116">按 args.cmd 分发</text>
+
+<rect class="nA" x="40" y="130" width="138" height="56" rx="8"/>
+<text class="t" x="109" y="148">cmd_ingest</text>
+<text class="ts" x="109" y="166">灌库（一次）</text>
+
+<rect class="nA" x="194" y="130" width="138" height="56" rx="8"/>
+<text class="t" x="263" y="148">cmd_ask</text>
+<text class="ts" x="263" y="166">提问 + 溯源</text>
+
+<rect class="nA" x="348" y="130" width="138" height="56" rx="8"/>
+<text class="t" x="417" y="148">cmd_demo</text>
+<text class="ts" x="417" y="166">完整流程</text>
+
+<rect class="nA" x="502" y="130" width="138" height="56" rx="8"/>
+<text class="t" x="571" y="148">cmd_list</text>
+<text class="ts" x="571" y="166">读文件 + 查库</text>
+
+<line class="edge" x1="109" y1="196" x2="109" y2="228"/>
+<line class="edge" x1="263" y1="196" x2="417" y2="228"/>
+<line class="edgeD" x1="417" y1="196" x2="192" y2="228"/>
+<rect class="bg" x="228" y="200" width="104" height="16"/>
+<text class="ts" x="280" y="208">demo 走完整流程</text>
+
+<rect class="layer" x="28" y="216" width="320" height="248" rx="10"/>
+<text class="badge" x="40" y="230">写路径 · ingest / demo</text>
+
+<rect class="nB" x="40" y="236" width="288" height="44" rx="8"/>
+<text class="t" x="184" y="251">load_documents</text>
+<text class="ts" x="184" y="268">读 data/*.txt</text>
+
+<line class="edge" x1="184" y1="284" x2="184" y2="294"/>
+
+<rect class="nB" x="40" y="296" width="288" height="44" rx="8"/>
+<text class="t" x="184" y="311">split_documents</text>
+<text class="ts" x="184" y="328">递归切 chunk</text>
+
+<line class="edge" x1="184" y1="344" x2="184" y2="354"/>
+
+<rect class="nB" x="40" y="356" width="288" height="44" rx="8"/>
+<text class="t" x="184" y="371">build_embeddings</text>
+<text class="ts" x="184" y="388">Ollama bge-m3 向量</text>
+
+<line class="edge" x1="184" y1="404" x2="184" y2="414"/>
+
+<rect class="nB" x="40" y="416" width="288" height="44" rx="8"/>
+<text class="t" x="184" y="431">build_vectorstore</text>
+<text class="ts" x="184" y="448">Milvus.from_documents</text>
+
+<rect class="layer" x="356" y="216" width="284" height="248" rx="10"/>
+<text class="badge" x="368" y="230">读路径 · ask</text>
+
+<rect class="nB" x="368" y="236" width="264" height="44" rx="8"/>
+<text class="t" x="500" y="251">build_embeddings</text>
+<text class="ts" x="500" y="268">复用（先向量化）</text>
+
+<line class="edge" x1="500" y1="284" x2="500" y2="294"/>
+
+<rect class="nB" x="368" y="296" width="264" height="44" rx="8"/>
+<text class="t" x="500" y="311">load_vectorstore</text>
+<text class="ts" x="500" y="328">连接已有 collection</text>
+
+<line class="edge" x1="500" y1="344" x2="500" y2="354"/>
+
+<rect class="nB" x="368" y="356" width="264" height="44" rx="8"/>
+<text class="t" x="500" y="371">build_model</text>
+<text class="ts" x="500" y="388">ChatOpenAI</text>
+
+<line class="edge" x1="500" y1="404" x2="500" y2="414"/>
+
+<rect class="nB" x="368" y="416" width="264" height="44" rx="8"/>
+<text class="t" x="500" y="431">build_rag_chain</text>
+<text class="ts" x="500" y="448">返回 (rag_chain, retriever)</text>
+
+<rect class="bg" x="80" y="484" width="520" height="16"/>
+<text class="tg" x="340" y="492">rag_chain = {context: retriever|format_docs, question: passthrough} | rag_prompt | model | parser</text>
+
+<line class="edgeG" x1="184" y1="460" x2="257" y2="508"/>
+<line class="edgeG" x1="500" y1="400" x2="423" y2="508"/>
+<rect class="bg" x="204" y="478" width="52" height="16"/>
+<text class="tg" x="230" y="486">写入</text>
+<rect class="bg" x="436" y="478" width="52" height="16"/>
+<text class="tg" x="462" y="486">调用</text>
+
+<rect class="nC" x="40" y="512" width="138" height="44" rx="8"/>
+<text class="t" x="109" y="527">Ollama · bge-m3</text>
+<text class="tg" x="109" y="544">localhost:11434</text>
+
+<rect class="nC" x="194" y="512" width="138" height="44" rx="8"/>
+<text class="t" x="263" y="527">Milvus 向量库</text>
+<text class="tg" x="263" y="544">localhost:19530</text>
+
+<rect class="nC" x="348" y="512" width="138" height="44" rx="8"/>
+<text class="t" x="417" y="527">DeepSeek API</text>
+<text class="tg" x="417" y="544">deepseek-v4-flash</text>
+
+<rect class="nC" x="502" y="512" width="138" height="44" rx="8"/>
+<text class="t" x="571" y="527">.env 配置</text>
+<text class="tg" x="571" y="544">密钥与模型名</text>
+
+<rect class="nA" x="40" y="580" width="10" height="10" rx="2"/>
+<text class="tg" x="58" y="585">命令</text>
+<rect class="nB" x="140" y="580" width="10" height="10" rx="2"/>
+<text class="tg" x="158" y="585">RAG 函数</text>
+<rect class="nC" x="290" y="580" width="10" height="10" rx="2"/>
+<text class="tg" x="308" y="585">外部服务</text>
+<line class="edge" x1="410" y1="585" x2="440" y2="585"/>
+<text class="tg" x="448" y="585">箭头 = 调用方向</text>
+</svg>

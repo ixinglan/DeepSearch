@@ -1,0 +1,16 @@
+LangChain 是什么
+
+LangChain 是一个用于开发大语言模型（LLM）应用的开源框架，由 Harrison Chase 于 2022 年 10 月发布。
+它的核心思想是"链"（Chain）——把 Prompt、模型、输出解析器等组件像水管一样串联起来。
+
+LangChain 的主要组件包括：
+1. Model I/O：与语言模型交互的接口，包括 Prompt 管理、模型调用、输出解析。
+2. Retrieval：从外部数据源检索信息，包括文档加载、切分、向量嵌入、向量存储和检索。
+3. Agents：让模型自主决定调用哪些工具来完成任务。
+4. Memory：在多轮对话中保持上下文记忆。
+
+LangChain 支持多种语言模型提供商，包括 OpenAI、Anthropic、DeepSeek、通义千问、智谱等，
+只要这些提供商兼容 OpenAI API 协议，就可以通过 ChatOpenAI 类直接接入。
+
+LCEL（LangChain Expression Language）是 LangChain 的链组合语法，用竖线 | 把组件串起来，
+例如：prompt | model | parser。这种写法简洁、可读性强，且支持流式输出、批量处理、异步等高级特性。

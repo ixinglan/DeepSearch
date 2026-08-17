@@ -1,0 +1,19 @@
+# P1 RAG 阶段依赖
+# P0 已装的包（langchain, langchain-openai, pydantic, python-dotenv）不用重装，这里只列新增的
+
+# Milvus：独立的向量数据库服务（Docker 运行），比 FAISS 更适合生产环境
+langchain-milvus>=0.4.0
+pymilvus>=3.0.0
+
+# langchain-community：社区集成包，含 TextLoader、DirectoryLoader、OllamaEmbeddings 等
+langchain-community>=0.3.0
+
+# langchain-text-splitters：文本切分器（RecursiveCharacterTextSplitter）
+langchain-text-splitters>=0.3.0
+
+# 注：Embeddings 用 Ollama 本地模型（bge-m3），不需要额外装 Python 包
+# 只需确保 Ollama 服务在本地运行（http://localhost:11434）且已拉取 bge-m3 模型
+#
+# 注：Milvus 需通过 Docker 运行，确保以下容器在跑：
+#   docker ps | grep milvus
+# 连接地址默认 http://localhost:19530

@@ -1,0 +1,19 @@
+Python 虚拟环境与依赖管理
+
+Python 虚拟环境（venv）是一个独立的 Python 运行环境，每个项目可以有自己的依赖包和版本，
+互不干扰。这就好比每个项目有自己的"工具箱"，不会互相打架。
+
+创建虚拟环境：python -m venv .venv
+激活虚拟环境：source .venv/bin/activate（mac/Linux）或 .venv\Scripts\activate（Windows）
+退出虚拟环境：deactivate
+
+安装依赖：pip install -r requirements.txt
+导出依赖：pip freeze > requirements.txt
+
+.env 文件用于存储环境变量（如 API key），配合 python-dotenv 库使用：
+- load_dotenv() 会自动读取当前目录下的 .env 文件
+- 把文件里的 KEY=VALUE 加载成环境变量
+- 代码里用 os.getenv("KEY") 读取
+
+环境变量优先级：系统环境变量 > .env 文件 > os.getenv 的默认值。
+例如 os.getenv("OPENAI_API_KEY", "default")：如果环境变量不存在，就用 "default"。

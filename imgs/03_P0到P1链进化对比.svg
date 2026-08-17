@@ -1,0 +1,88 @@
+<svg viewBox="0 0 680 400" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>P0 到 P1 的链结构进化（精确版）</title>
+<desc>P0 基础链为 prompt 接 model 接 parser；P1 在其头部插入检索段，prompt 升级为同时接收资料与问题；model 与 parser 两阶段复用同一套写法</desc>
+<style>
+.t{font:500 13px sans-serif;fill:#0C447C;text-anchor:middle}
+.ts{font:400 11px sans-serif;fill:#185FA5;text-anchor:middle}
+.tg{font:400 11px sans-serif;fill:#5F5E5A;text-anchor:middle}
+.h{font:500 14px sans-serif;fill:#2C2C2A;text-anchor:middle}
+.ha{font:500 13px sans-serif;fill:#085041}
+.nB{fill:#E6F1FB;stroke:#185FA5;stroke-width:1}
+.nT{fill:#E1F5EE;stroke:#0F6E56;stroke-width:1}
+.nC{fill:#F1EFE8;stroke:#5F5E5A;stroke-width:1}
+.edge{stroke:#185FA5;stroke-width:1.2;fill:none;marker-end:url(#arrow)}
+.edgeT{stroke:#0F6E56;stroke-width:1.2;fill:none;marker-end:url(#arrow)}
+.edgeD{stroke:#185FA5;stroke-width:1.2;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow)}
+.bg{fill:#ffffff}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="h" x="340" y="26">P0 链 → P1 链：插入了什么？</text>
+
+<text class="ha" x="60" y="48">P0 基础链（已学）</text>
+
+<rect class="nB" x="60" y="52" width="130" height="44" rx="8"/>
+<text class="t" x="125" y="67">prompt</text>
+<text class="ts" x="125" y="84">ChatPromptTemplate</text>
+
+<rect class="nB" x="250" y="52" width="130" height="44" rx="8"/>
+<text class="t" x="315" y="67">model</text>
+<text class="ts" x="315" y="84">ChatOpenAI</text>
+
+<rect class="nB" x="440" y="52" width="130" height="44" rx="8"/>
+<text class="t" x="505" y="67">parser</text>
+<text class="ts" x="505" y="84">StrOutputParser</text>
+
+<line class="edge" x1="192" y1="74" x2="246" y2="74"/>
+<line class="edge" x1="382" y1="74" x2="436" y2="74"/>
+<rect class="bg" x="578" y="66" width="58" height="16"/>
+<text class="ts" x="607" y="74">→ 纯文本</text>
+
+<line class="edgeD" x1="315" y1="96" x2="315" y2="142"/>
+<rect class="bg" x="262" y="112" width="106" height="16"/>
+<text class="ts" x="315" y="120">插入检索段</text>
+
+<text class="ha" x="60" y="164">P1 RAG 链（新增检索段）</text>
+
+<rect class="nT" x="60" y="180" width="125" height="56" rx="8"/>
+<text class="t" x="122" y="198">检索段</text>
+<text class="ts" x="122" y="216">retriever|format_docs</text>
+
+<rect class="nT" x="220" y="180" width="120" height="56" rx="8"/>
+<text class="t" x="280" y="198">rag_prompt</text>
+<text class="ts" x="280" y="216">资料 + 问题</text>
+
+<rect class="nT" x="360" y="180" width="120" height="56" rx="8"/>
+<text class="t" x="420" y="198">model</text>
+<text class="ts" x="420" y="216">ChatOpenAI</text>
+
+<rect class="nT" x="500" y="180" width="120" height="56" rx="8"/>
+<text class="t" x="560" y="198">parser</text>
+<text class="ts" x="560" y="216">StrOutputParser</text>
+
+<line class="edgeT" x1="187" y1="208" x2="216" y2="208"/>
+<line class="edgeT" x1="342" y1="208" x2="356" y2="208"/>
+<line class="edgeT" x1="482" y1="208" x2="496" y2="208"/>
+
+<rect class="bg" x="140" y="252" width="400" height="16"/>
+<text class="tg" x="340" y="260">retriever = vectorstore.as_retriever(k=3)，从 Milvus 捞最相似片段</text>
+
+<rect class="nC" x="40" y="300" width="180" height="56" rx="8"/>
+<text class="t" x="130" y="318">build_model()</text>
+<text class="tg" x="130" y="336">两阶段同款写法</text>
+
+<rect class="nC" x="245" y="300" width="180" height="56" rx="8"/>
+<text class="t" x="335" y="318">StrOutputParser</text>
+<text class="tg" x="335" y="336">解析纯文本</text>
+
+<rect class="nC" x="450" y="300" width="190" height="56" rx="8"/>
+<text class="t" x="545" y="318">| 管道思维</text>
+<text class="tg" x="545" y="336">P0 链 → P1 RAG 链</text>
+
+<rect class="bg" x="40" y="372" width="600" height="16"/>
+<text class="tg" x="340" y="380">相同点：model 与 parser 两阶段复用；不同点：P1 的 prompt 升级为「资料 + 问题」</text>
+</svg>

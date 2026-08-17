@@ -1,0 +1,23 @@
+LangGraph 状态图编排
+
+LangGraph 是 LangChain 团队推出的图编排框架，用于构建有状态的、可循环的 AI 应用。
+它解决了 LangChain 链式结构（LCEL）无法优雅表达"循环"和"条件分支"的问题。
+
+LangGraph 的核心概念：
+1. State（状态）：用一个 TypedDict 定义，在节点之间传递数据。比如 {question, documents, answer}。
+2. Node（节点）：每个节点是一个函数，接收 State，返回更新后的 State。
+3. Edge（边）：连接节点，表示执行顺序。普通边是固定走向，条件边根据 State 内容决定走向。
+4. Conditional Edge（条件边）：用 add_conditional_edges 添加，根据当前状态决定下一步走哪个节点。
+5. END（终止）：图的终止标志，到达 END 就结束运行。
+
+LangGraph 与 LangChain LCEL 的区别：
+- LCEL 是线性的"管道"：A | B | C，数据从左到右流过，不支持循环和条件分支。
+- LangGraph 是"图"：可以表达循环（比如"写→审→不达标→重写"）、条件分支、多路径。
+
+典型应用场景：
+- 多轮对话 agent（需要循环：用户说话→agent 回复→用户再说话）
+- 写→审→改循环器（写作→自动审稿→不达标就修改→再审→达标为止）
+- Deep Research Agent（搜索→阅读→信息不够→再搜索→够了就写报告）
+
+LangGraph 的编译：用 graph.compile() 把图编译成一个可运行对象，
+然后像调用函数一样 .invoke(state) 运行它。
