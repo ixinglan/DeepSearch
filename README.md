@@ -71,19 +71,27 @@ Python 进程 ←gRPC→ Milvus 服务（localhost:19530）
 
 ---
 
-### P2 · Tools & Agents：让模型会用工具 ⬜ 待办
+### P2 · Tools & Agents：让模型会用工具 ✅ 已完成
 
-> 目标：给模型装上"手"，能调函数、搜网页、查数据库。
-> 预计目录：`p2_tools_agents/`
+> 目标：给模型装上"手"，能调函数、算数、查日期，理解 Agent 的"思考→行动→观察"循环。
+> 目录：`p2_tools_agents/`
 
-- [ ] 自定义工具：`@tool` 装饰器（把普通函数变成模型可调用的工具）
-- [ ] 内置工具：搜索（Tavily / DuckDuckGo）、计算器、Python REPL
-- [ ] Tool calling：`model.bind_tools([...])`（让模型决定何时调哪个工具）
-- [ ] ReAct Agent：用 `create_react_agent` 搭"思考→行动→观察→再思考"循环
-- [ ] Agent Executor：运行 agent、管理工具调用循环、处理中间步骤
-- [ ] 命令行演示：`python main.py agent "今天北京天气怎样？"`
+- [x] 自定义工具：`@tool` 装饰器（把普通函数变成模型可调用的工具，docstring 即工具说明书）
+- [x] 工具清单：计算器（add / multiply）、日期（get_today），纯本地零依赖
+- [x] Tool calling：`model.bind_tools([...])`（让模型决定何时调哪个工具、传什么参数）
+- [x] 手动 ReAct 循环：`invoke → 看 tool_calls → 执行工具 → ToolMessage 喂回 → 最终回答`（底层原理演示）
+- [x] 完整 Agent：`create_agent`（LangGraph 1.x 新 API，自动管理工具调用循环）
+- [x] 命令行演示：`python main.py agent "今天几号？顺便算 7+9"`（模型自动调 2 个工具后回答）
+- [x] 验证 DeepSeek V4 工具调用兼容性：bind_tools（auto）正常；强制 tool_choice 才报错（P0 坑）
 
-**将掌握的概念**：`@tool`、`bind_tools`、`tool_call`、ReAct 模式、`create_react_agent`、`AgentExecutor`
+**P2 运行方式**：
+```bash
+cd ~/Workbuddy/langchain-langGraph/p2_tools_agents
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py demo     # 依次演示 3 个层次
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py agent "用工具算一下 6 乘以 7"   # 直接和 Agent 对话
+```
+
+**掌握的概念**：`@tool`、`bind_tools`、`tool_call`、`ToolMessage`、ReAct 循环、`create_agent`（LangGraph 1.x 新 API，旧名 `create_react_agent` 已弃用）
 
 ---
 
@@ -140,7 +148,7 @@ Python 进程 ←gRPC→ Milvus 服务（localhost:19530）
 |------|------|------|
 | P0 基础热身 | ✅ 已完成 | `p0_foundations/` |
 | P1 RAG 入门 | ✅ 已完成 | `p1_rag/` |
-| P2 Tools & Agents | ⬜ 待办 | `p2_tools_agents/` |
+| P2 Tools & Agents | ✅ 已完成 | `p2_tools_agents/` |
 | P3 LangGraph 入门 | ⬜ 待办 | `p3_langgraph/` |
 | P4 综合项目 | 🔶 待办（核心目标） | `p4_deep_research/` |
 | P5 进阶（可选） | ⬜ 待办 | — |
