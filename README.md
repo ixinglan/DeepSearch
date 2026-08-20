@@ -95,19 +95,29 @@ cd ~/Workbuddy/langchain-langGraph/p2_tools_agents
 
 ---
 
-### P3 · LangGraph 入门：有状态的可循环编排 ⬜ 待办
+### P3 · LangGraph 入门：有状态的可循环编排 ✅ 已完成
 
 > 目标：掌握状态图编排，理解 LangGraph 的"图"思维，区别于 LangChain 的"链"。
-> 预计目录：`p3_langgraph/`
+> 目录：`p3_langgraph/`（实战：写→审→改 循环器）
 
-- [ ] StateGraph 基础：定义 `State`（TypedDict）、添加节点（`add_node`）、添加边（`add_edge`）
-- [ ] 条件边：`add_conditional_edges`（根据状态决定下一步走哪个节点）
-- [ ] 循环控制：`END` 终止 + 条件边实现"写→审→改"循环
-- [ ] 入口与编译：`set_entry_point` / `compile()` → 得到可运行的 graph
-- [ ] 实战：多轮"写作→审稿→修订"循环器（写一段→自审→不达标就改→达标为止）
-- [ ] 可视化：`graph.get_graph().draw_mermaid()` 看流程图
+- [x] StateGraph 基础：定义 `State`（TypedDict）、`StateGraph(State)`、`add_node` 注册节点
+- [x] 固定边与条件边：`add_edge`（写→审）+ `add_conditional_edges`（审→ 达标/继续 二选一）
+- [x] 循环控制：条件边返回 `continue` 回到 write 节点，形成"写→审→改"循环；`END` 终止
+- [x] 入口与编译：`START` 常量（1.x 新 API）+ `compile()` → 可运行 graph
+- [x] 节点函数约定：接收 `state` 字典、返回"要更新的键"；条件函数返回路径名
+- [x] 实战验证：demo 跑出 8→8→8 三轮循环，第 3 轮按上限强制收尾（DeepSeek 真调用）
+- [x] 可视化：`graph.get_graph().draw_mermaid()` 输出 Mermaid（验证了循环边）
+- [x] 复用 P0 知识：review 节点用 `with_structured_output(json_mode)` + prompt 含 "json" 关键词
 
-**将掌握的概念**：`StateGraph`、`State`（TypedDict）、`Node`、`Edge`、`Conditional Edge`、`END`、`compile()`、循环与终止
+**P3 运行方式**：
+```bash
+cd ~/Workbuddy/langchain-langGraph/p3_langgraph
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py demo          # 默认主题跑完整循环
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py run "一句话介绍 LangGraph"   # 自定义主题
+~/Workbuddy/langchain-langGraph/.venv/bin/python main.py graph         # 打印图结构 Mermaid
+```
+
+**掌握的概念**：`State`（TypedDict）、`StateGraph`、`add_node`、`add_edge`、`add_conditional_edges`、`START` / `END`、`compile()`、节点函数约定、条件函数、循环与终止、`draw_mermaid`
 
 ---
 
@@ -149,7 +159,7 @@ cd ~/Workbuddy/langchain-langGraph/p2_tools_agents
 | P0 基础热身 | ✅ 已完成 | `p0_foundations/` |
 | P1 RAG 入门 | ✅ 已完成 | `p1_rag/` |
 | P2 Tools & Agents | ✅ 已完成 | `p2_tools_agents/` |
-| P3 LangGraph 入门 | ⬜ 待办 | `p3_langgraph/` |
+| P3 LangGraph 入门 | ✅ 已完成 | `p3_langgraph/` |
 | P4 综合项目 | 🔶 待办（核心目标） | `p4_deep_research/` |
 | P5 进阶（可选） | ⬜ 待办 | — |
 

@@ -1,0 +1,54 @@
+<svg viewBox="0 0 680 450" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>P3 写审改循环器 StateGraph 设计图</title>
+<desc>START 进入 write 写作节点，写完后到 review 审稿节点，条件函数 should_continue 根据评分决定：达标走 done 到 END，未达标走 continue 回到 write 循环修改</desc>
+<style>
+.t{font:500 13px sans-serif;fill:#26215C;text-anchor:middle}
+.ts{font:400 11px sans-serif;fill:#534AB7;text-anchor:middle}
+.tg{font:400 11px sans-serif;fill:#5F5E5A;text-anchor:middle}
+.h{font:500 14px sans-serif;fill:#2C2C2A;text-anchor:middle}
+.nA{fill:#CECBF6;stroke:#534AB7;stroke-width:1}
+.nB{fill:#EEEDFE;stroke:#534AB7;stroke-width:1}
+.edge{stroke:#534AB7;stroke-width:1.2;fill:none;marker-end:url(#arrow)}
+.edgeD{stroke:#534AB7;stroke-width:1.2;fill:none;stroke-dasharray:5 3;marker-end:url(#arrow)}
+.bg{fill:#ffffff}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="h" x="340" y="26">P3 · StateGraph 设计：写 → 审 → 改 循环</text>
+
+<rect class="nA" x="300" y="44" width="80" height="30" rx="15"/>
+<text class="t" x="340" y="59">START</text>
+
+<line class="edge" x1="340" y1="74" x2="340" y2="96"/>
+
+<rect class="nB" x="260" y="100" width="160" height="64" rx="8"/>
+<text class="t" x="340" y="120">write 写作节点</text>
+<text class="ts" x="340" y="138">生成 / 按反馈修改草稿</text>
+<text class="ts" x="340" y="154">写入：draft · round</text>
+
+<line class="edge" x1="340" y1="164" x2="340" y2="190"/>
+
+<rect class="nB" x="260" y="192" width="160" height="64" rx="8"/>
+<text class="t" x="340" y="212">review 审稿节点</text>
+<text class="ts" x="340" y="230">打分 + 反馈（json_mode）</text>
+<text class="ts" x="340" y="246">写入：review_score · feedback</text>
+
+<line class="edge" x1="340" y1="256" x2="340" y2="290"/>
+<line class="edge" x1="340" y1="290" x2="340" y2="368"/>
+
+<path class="edgeD" d="M340 290 L560 290 L560 132 L422 132" fill="none"/>
+<rect class="bg" x="498" y="200" width="124" height="16"/>
+<text class="ts" x="560" y="208">continue：评分 &lt; 9</text>
+<rect class="bg" x="350" y="330" width="120" height="16"/>
+<text class="ts" x="410" y="338">done：达标 / 收尾</text>
+
+<rect class="nA" x="300" y="372" width="80" height="30" rx="15"/>
+<text class="t" x="340" y="387">END</text>
+
+<rect class="bg" x="80" y="420" width="520" height="16"/>
+<text class="tg" x="340" y="428">条件函数 should_continue 读 State：评分 ≥ 9 或满 3 轮 → done；否则 → continue 回到 write 再改</text>
+</svg>
